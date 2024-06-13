@@ -1,0 +1,76 @@
+services:
+  entrypoint:
+    image: "bitnami/nginx:latest"
+    container_name: entrypoint
+    ports:
+      - 80:80
+    volumes:
+      - ./entrypoint/nginx.conf:/opt/bitnami/nginx/conf/nginx.conf:ro
+    networks:
+      - entrypoint
+      - frontend
+
+
+  backend:
+    image: "bitnami/openresty:latest"
+    container_name: backend
+    volumes:
+      - ./backend/lua.conf:/opt/bitnami/openresty/nginx/conf/bitnami/lua.conf:ro
+    ports:
+      - 8888:8080
+    networks:
+      - entrypoint
+      - backend
+      - frontend
+
+  frontend1:
+    image: "bitnami/openresty:latest"
+    container_name: frontend1
+    ports:
+      - 8081:8080
+    volumes:
+      - ./frontend/upstreams.conf:/opt/bitnami/openresty/nginx/conf/server_blocks/upstreams.conf:ro
+      - ./frontend/proxy.conf:/opt/bitnami/openresty/nginx/conf/bitnami/proxy.conf:ro
+    depends_on:
+      - backend
+    networks:
+      - frontend
+
+  frontend2:
+    image: "bitnami/openresty:latest"
+    container_name: frontend2
+    ports:
+      - 8082:8080
+    volumes:
+      - ./frontend/upstreams.conf:/opt/bitnami/openresty/nginx/conf/server_blocks/upstreams.conf:ro
+      - ./frontend/proxy.conf:/opt/bitnami/openresty/nginx/conf/bitnami/proxy.conf:ro
+    networks:
+      - frontend
+
+  frontend3:
+    image: "bitnami/openresty:latest"
+    container_name: frontend3
+    ports:
+      - 8083:8080
+    volumes:
+      - ./frontend/upstreams.conf:/opt/bitnami/openresty/nginx/conf/server_blocks/upstreams.conf:ro
+      - ./frontend/proxy.conf:/opt/bitnami/openresty/nginx/conf/bitnami/proxy.conf:ro
+    networks:
+      - frontend
+
+networks:
+  backend:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.30.0/29
+  frontend:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.20.0/29
+  entrypoint:
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/29
