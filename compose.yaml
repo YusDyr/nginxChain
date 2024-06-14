@@ -28,13 +28,13 @@ services:
       - frontend
 
   frontend1:
-    image: "bitnami/openresty:latest"
+    image: "bitnami/nginx:latest"
     container_name: frontend1
     ports:
       - 8081:8080
     volumes:
-      - ./frontend/upstreams.conf:/opt/bitnami/openresty/nginx/conf/server_blocks/upstreams.conf:ro
-      - ./frontend/proxy.conf:/opt/bitnami/openresty/nginx/conf/bitnami/proxy.conf:ro
+      - ./frontend/proxy.conf:/opt/bitnami/nginx/conf/bitnami/proxy.conf:ro
+      - ./frontend/upstreams.conf:/opt/bitnami/nginx/conf/server_blocks/upstreams.conf:ro
     restart: always
     depends_on:
       - backend
@@ -42,25 +42,25 @@ services:
       - frontend
 
   frontend2:
-    image: "bitnami/openresty:latest"
+    image: "bitnami/nginx:latest"
     container_name: frontend2
     ports:
       - 8082:8080
     volumes:
-      - ./frontend/upstreams.conf:/opt/bitnami/openresty/nginx/conf/server_blocks/upstreams.conf:ro
-      - ./frontend/proxy.conf:/opt/bitnami/openresty/nginx/conf/bitnami/proxy.conf:ro
+      - ./frontend/proxy.conf:/opt/bitnami/nginx/conf/bitnami/proxy.conf:ro
+      - ./frontend/upstreams.conf:/opt/bitnami/nginx/conf/server_blocks/upstreams.conf:ro
     restart: always
     networks:
       - frontend
 
   frontend3:
-    image: "bitnami/openresty:latest"
+    image: "bitnami/nginx:latest"
     container_name: frontend3
     ports:
       - 8083:8080
     volumes:
-      - ./frontend/upstreams.conf:/opt/bitnami/openresty/nginx/conf/server_blocks/upstreams.conf:ro
-      - ./frontend/proxy.conf:/opt/bitnami/openresty/nginx/conf/bitnami/proxy.conf:ro
+      - ./frontend/proxy.conf:/opt/bitnami/nginx/conf/bitnami/proxy.conf:ro
+      - ./frontend/upstreams.conf:/opt/bitnami/nginx/conf/server_blocks/upstreams.conf:ro
     restart: always
     networks:
       - frontend

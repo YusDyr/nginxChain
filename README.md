@@ -1,6 +1,10 @@
 # nginxChain
 Proof of concept for chained reverse proxies and X-Forwarded-For dealing.
 
+There are two branches:
+https://github.com/YusDyr/nginxChain/tree/main - done with Lua
+https://github.com/YusDyr/nginxChain/tree/nginx-frontend - done with Nginx's `map` feature
+
 It removes any `X-Forwarded-For` header if it set without `X-Nginx-Proxy` header - what means it was spoofed (provided by an user).
 
 Check:
